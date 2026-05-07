@@ -3,241 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earn Master - Smart Auto</title>
+    <title>Earn Master - Infinite Auto</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Quicksand:wght@400;600&display=swap');
 
         :root {
-            --neon-cyan: #00f7ff;
-            --neon-purple: #9d00ff;
-            --dark-bg: #050505;
-            --glass: rgba(255, 255, 255, 0.05);
+            --neon-blue: #00d2ff;
+            --neon-pink: #ff007f;
+            --bg-dark: #080a10;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
 
         body {
-            background: var(--dark-bg);
+            background: var(--bg-dark);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
+            color: #fff;
             overflow: hidden;
         }
 
-        /* Animated Background */
-        .bg-glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--neon-purple);
-            filter: blur(150px);
-            opacity: 0.2;
-            z-index: -1;
-            animation: move 10s infinite alternate;
-        }
-
-        @keyframes move {
-            from { transform: translate(-50%, -50%); }
-            to { transform: translate(50%, 50%); }
-        }
-
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
+        .main-container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 360px;
-            padding: 40px 30px;
+            width: 350px;
+            padding: 40px 20px;
             border-radius: 40px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        }
-
-        h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 22px;
-            background: linear-gradient(to right, var(--neon-cyan), #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-        }
-
-        /* Counter Circle */
-        .status-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
-            margin: 0 auto 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 1);
             position: relative;
         }
 
-        .status-circle.active {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px var(--neon-cyan);
-            transition: 0.5s;
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
         }
 
-        #points { font-size: 32px; font-weight: 700; color: #fff; }
-        .label { font-size: 10px; letter-spacing: 2px; color: var(--neon-cyan); text-transform: uppercase; }
+        /* Animated Spinner */
+        .loader-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        /* Controls */
-        .controls { display: flex; flex-direction: column; gap: 15px; }
+        .spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            display: none; /* Default Hidden */
+        }
+
+        .spinner.active { display: block; }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); border-top-color: var(--neon-blue); }
+            50% { border-top-color: var(--neon-pink); }
+            100% { transform: rotate(360deg); border-top-color: var(--neon-blue); }
+        }
+
+        #balance {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        /* Buttons */
+        .btn-stack { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
 
         button {
+            padding: 15px;
+            border-radius: 15px;
             border: none;
-            padding: 16px;
-            border-radius: 20px;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
             font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .start-btn {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .stop-btn {
+            background: #1a1a1a;
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d;
+        }
+
+        .status-text {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #666;
             letter-spacing: 1px;
         }
 
-        .btn-auto {
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
-            color: #000;
-        }
-
-        .btn-auto:disabled {
-            background: #222;
-            color: #555;
-            cursor: not-allowed;
-        }
-
-        .btn-stop {
-            background: transparent;
-            border: 1px solid #ff4d4d;
-            color: #ff4d4d;
-        }
-
-        .btn-stop:hover { background: #ff4d4d; color: white; }
-
-        .system-status {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #888;
-        }
-
-        .dot {
-            height: 8px; width: 8px; background: #888;
-            border-radius: 50%; display: inline-block; margin-right: 5px;
-        }
-        .dot.online { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
-
+        #status-msg { color: var(--neon-blue); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<div class="main-container">
+    <h1>EARN MASTER PRO</h1>
 
-<div class="container">
-    <h1>EARN MASTER</h1>
-
-    <div class="status-circle" id="circle">
-        <span class="label">Points</span>
-        <span id="points">0.00</span>
-        <span class="label" id="ad-count" style="color:#888; margin-top:5px">Ads: 0</span>
+    <div class="loader-box">
+        <div class="spinner" id="main-spinner"></div>
+        <div style="z-index: 10;">
+            <div id="balance">0.00</div>
+            <div style="font-size: 10px; color: #888; margin-top: 5px;">POINTS EARNED</div>
+        </div>
     </div>
 
-    <div class="controls">
-        <button id="startBtn" class="btn-auto" onclick="initiateAutoSystem()">START AUTO CYCLE</button>
-        <button id="stopBtn" class="btn-stop" onclick="killSystem()" disabled>STOP SYSTEM</button>
+    <div class="btn-stack">
+        <button id="runBtn" class="start-btn" onclick="startInfiniteCycle()">Start Auto ads</button>
+        <button id="quitBtn" class="stop-btn" onclick="stopInfiniteCycle()" disabled>Stop System</button>
     </div>
 
-    <div class="system-status">
-        <span id="statusDot" class="dot"></span> 
-        <span id="statusText">System: Offline</span>
-    </div>
+    <p class="status-text">STATUS: <span id="status-msg">READY</span></p>
 </div>
 
 <script src='//libtl.com/sdk.js' data-zone='10974495' data-sdk='show_10974495'></script>
 
 <script>
-    let totalPoints = parseFloat(localStorage.getItem('pts')) || 0;
-    let totalAds = parseInt(localStorage.getItem('ads')) || 0;
-    let isSystemRunning = false;
+    let points = parseFloat(localStorage.getItem('user_pts')) || 0;
+    let isAutoOn = false;
+    let cycleTimer;
 
-    // UI Initializer
-    function refreshUI() {
-        document.getElementById('points').innerText = totalPoints.toFixed(2);
-        document.getElementById('ad-count').innerText = "Ads: " + totalAds;
-        localStorage.setItem('pts', totalPoints);
-        localStorage.setItem('ads', totalAds);
+    function updateDisplay() {
+        document.getElementById('balance').innerText = points.toFixed(2);
+        localStorage.setItem('user_pts', points);
     }
-    refreshUI();
+    updateDisplay();
 
-    async function initiateAutoSystem() {
-        if (typeof show_10974495 !== 'function') {
-            alert("Ad SDK not loaded. Refresh page.");
-            return;
-        }
-
-        isSystemRunning = true;
-        updateStatus(true, "System: Running...");
+    async function startInfiniteCycle() {
+        if (typeof show_10974495 !== 'function') return alert("SDK Loading...");
         
-        cycleAd();
+        isAutoOn = true;
+        toggleUI(true);
+        runAdLoop();
     }
 
-    async function cycleAd() {
-        if (!isSystemRunning) return;
+    async function runAdLoop() {
+        if (!isAutoOn) return;
 
-        updateStatus(true, "Loading Ad...");
+        setStatus("LOADING AD...", true);
         
         try {
-            // Monetag Ad Show
+            // ১. অ্যাড দেখানো শুরু
             await show_10974495();
             
-            // Ad Success Logic
-            totalAds++;
-            totalPoints += 0.50;
-            refreshUI();
+            // ২. অ্যাড সাকসেস হলে পয়েন্ট যোগ
+            points += 0.50;
+            updateDisplay();
+
+            // ৩. "X" বাটনে ক্লিক করার ঝামেলা ছাড়াই অটোমেটিক লোডিং স্টেটে যাওয়া
+            setStatus("WAITING NEXT...", true);
             
-            updateStatus(true, "Ad Finished. Re-syncing...");
+            // ৫ সেকেন্ড গ্যাপ দিয়ে আবার অটো লুপ
+            cycleTimer = setTimeout(() => {
+                runAdLoop();
+            }, 6000); // ৬ সেকেন্ড বিরতি
 
-            // ৫ সেকেন্ড গ্যাপ দিয়ে আবার অটো শুরু (Loop)
-            setTimeout(() => {
-                if(isSystemRunning) cycleAd();
-            }, 5000);
-
-        } catch (error) {
-            console.log("Ad Interrupted or Error");
-            updateStatus(true, "Retrying in 10s...");
-            setTimeout(() => {
-                if(isSystemRunning) cycleAd();
-            }, 10000);
+        } catch (err) {
+            console.log("Ad Blocked or Skipped");
+            setStatus("RETRYING...", true);
+            setTimeout(runAdLoop, 8000); // এরর হলে ৮ সেকেন্ড পর ট্রাই
         }
     }
 
-    function killSystem() {
-        isSystemRunning = false;
-        updateStatus(false, "System: Offline");
-        alert("Auto System Terminated.");
+    function stopInfiniteCycle() {
+        isAutoOn = false;
+        clearTimeout(cycleTimer);
+        toggleUI(false);
+        setStatus("SYSTEM STOPPED", false);
     }
 
-    function updateStatus(active, text) {
-        const dot = document.getElementById('statusDot');
-        const txt = document.getElementById('statusText');
-        const circle = document.getElementById('circle');
-        const startBtn = document.getElementById('startBtn');
-        const stopBtn = document.getElementById('stopBtn');
+    function setStatus(msg, spin) {
+        document.getElementById('status-msg').innerText = msg;
+        const spinner = document.getElementById('main-spinner');
+        if (spin) spinner.classList.add('active');
+        else spinner.classList.remove('active');
+    }
 
-        txt.innerText = text;
-        if(active) {
-            dot.classList.add('online');
-            circle.classList.add('active');
-            startBtn.disabled = true;
-            stopBtn.disabled = false;
+    function toggleUI(running) {
+        document.getElementById('runBtn').disabled = running;
+        document.getElementById('quitBtn').disabled = !running;
+        if(running) {
+            document.getElementById('runBtn').innerText = "SYSTEM ACTIVE";
+            document.getElementById('runBtn').style.opacity = "0.6";
         } else {
-            dot.classList.remove('online');
-            circle.classList.remove('active');
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
+            document.getElementById('runBtn').innerText = "Start Auto ads";
+            document.getElementById('runBtn').style.opacity = "1";
         }
     }
 </script>
