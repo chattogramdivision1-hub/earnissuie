@@ -1,268 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Earn Master</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Raleway:wght@400;600&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn Master - Smart Auto</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;600&display=swap');
 
-* { box-sizing:border-box; margin:0; padding:0; font-family:'Raleway', sans-serif; }
+        :root {
+            --neon-cyan: #00f7ff;
+            --neon-purple: #9d00ff;
+            --dark-bg: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
 
-body {
-	height:100vh;
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-	background-size: 400% 400%;
-	animation: gradientBG 15s ease infinite;
-	color:#fff;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
-@keyframes gradientBG{
-	0%{background-position:0% 50%;}
-	50%{background-position:100% 50%;}
-	100%{background-position:0% 50%;}
-}
+        body {
+            background: var(--dark-bg);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
 
-.container {
-	background: rgba(20,20,20,0.85);
-	padding:30px;
-	border-radius:20px;
-	width:360px;
-	box-shadow:0 10px 30px rgba(0,0,0,0.7);
-	text-align:center;
-}
+        /* Animated Background */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--neon-purple);
+            filter: blur(150px);
+            opacity: 0.2;
+            z-index: -1;
+            animation: move 10s infinite alternate;
+        }
 
-h1 {
-	font-family:'Orbitron', sans-serif;
-	font-size:28px;
-	color:#00ffcc;
-	margin-bottom:15px;
-}
+        @keyframes move {
+            from { transform: translate(-50%, -50%); }
+            to { transform: translate(50%, 50%); }
+        }
 
-.developer {
-	display:inline-block;
-	padding:8px 15px;
-	border-radius:10px;
-	text-decoration:none;
-	font-weight:600;
-	color:#fff;
-	background: linear-gradient(90deg,#ff5f6d,#ffc371);
-	transition:0.3s;
-	margin-bottom:20px;
-}
-.developer:hover{
-	background: linear-gradient(90deg,#ffc371,#ff5f6d);
-}
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 360px;
+            padding: 40px 30px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
 
-/* Stats */
-.stats p{
-	font-size:15px;
-	margin:6px 0;
-}
+        h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 22px;
+            background: linear-gradient(to right, var(--neon-cyan), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
 
-/* Progress Circle */
-.progress-circle {
-	width:100px;
-	height:100px;
-	border-radius:50%;
-	background: conic-gradient(#00ffcc 0%, #00ffcc 0%, rgba(0,255,204,0.1) 100%);
-	margin:15px auto;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	font-weight:bold;
-	font-size:18px;
-	color:#00ffcc;
-}
+        /* Counter Circle */
+        .status-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
 
-/* Buttons */
-.buttons button {
-	width:95%;
-	padding:12px;
-	margin:8px 0;
-	border:none;
-	border-radius:12px;
-	font-size:16px;
-	font-weight:600;
-	cursor:pointer;
-	color:#fff;
-	background: linear-gradient(45deg,#ff512f,#dd2476);
-	transition:0.3s;
-}
-.buttons button:hover{
-	background: linear-gradient(45deg,#dd2476,#ff512f);
-}
+        .status-circle.active {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan);
+            transition: 0.5s;
+        }
 
-/* Withdraw Section */
-.withdraw-section{
-	margin-top:20px;
-	display:none;
-	background: rgba(30,30,30,0.9);
-	padding:20px;
-	border-radius:15px;
-}
-.withdraw-section input, .withdraw-section select{
-	width:100%;
-	padding:12px;
-	margin:8px 0;
-	border-radius:10px;
-	border:none;
-	background:#111;
-	color:#fff;
-}
-.withdraw-section button{
-	width:100%;
-	padding:12px;
-	margin-top:10px;
-	font-weight:bold;
-	font-size:16px;
-	border:none;
-	border-radius:12px;
-	background: linear-gradient(45deg,#1FA2FF,#12D8FA,#A6FFCB);
-	color:#111;
-	cursor:pointer;
-	transition:0.3s;
-}
-.withdraw-section button:hover{
-	background: linear-gradient(45deg,#A6FFCB,#12D8FA,#1FA2FF);
-}
-#withdraw-status{
-	margin-top:10px;
-	font-size:14px;
-	color:#ff4d4d;
-}
+        #points { font-size: 32px; font-weight: 700; color: #fff; }
+        .label { font-size: 10px; letter-spacing: 2px; color: var(--neon-cyan); text-transform: uppercase; }
 
-/* Links */
-.links a{
-	display:block;
-	margin:8px 0;
-	padding:10px;
-	border-radius:12px;
-	font-weight:bold;
-	text-decoration:none;
-	background: linear-gradient(90deg,#f7971e,#ffd200);
-	color:#111;
-	transition:0.3s;
-}
-.links a:hover{
-	background: linear-gradient(90deg,#ffd200,#f7971e);
-}
+        /* Controls */
+        .controls { display: flex; flex-direction: column; gap: 15px; }
 
-</style>
+        button {
+            border: none;
+            padding: 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .btn-auto {
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            color: #000;
+        }
+
+        .btn-auto:disabled {
+            background: #222;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        .btn-stop {
+            background: transparent;
+            border: 1px solid #ff4d4d;
+            color: #ff4d4d;
+        }
+
+        .btn-stop:hover { background: #ff4d4d; color: white; }
+
+        .system-status {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .dot {
+            height: 8px; width: 8px; background: #888;
+            border-radius: 50%; display: inline-block; margin-right: 5px;
+        }
+        .dot.online { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
+
+    </style>
 </head>
 <body>
 
+<div class="bg-glow"></div>
+
 <div class="container">
-	<h1>Earn Master</h1>
-	<a href="https://youtube.com/@omarthe_gamer?si=7iHFeg-RTg6XNGGV" target="_blank" class="developer">SIAM WEB</a>
+    <h1>EARN MASTER</h1>
 
-	<div class="stats">
-    	<p>Watched Ads: <span id="watched-ads">0</span></p>
-    	<p>Earned Points: <span id="earned-points">0</span></p>
-	</div>
+    <div class="status-circle" id="circle">
+        <span class="label">Points</span>
+        <span id="points">0.00</span>
+        <span class="label" id="ad-count" style="color:#888; margin-top:5px">Ads: 0</span>
+    </div>
 
-	<div class="progress-circle" id="progress-circle"><span id="ads-progress">0%</span></div>
+    <div class="controls">
+        <button id="startBtn" class="btn-auto" onclick="initiateAutoSystem()">START AUTO CYCLE</button>
+        <button id="stopBtn" class="btn-stop" onclick="killSystem()" disabled>STOP SYSTEM</button>
+    </div>
 
-	<div class="buttons">
-    	<button id="watch-ad-btn">Watch Ad</button>
-    	<button id="auto-ad-btn" onclick="startAutoAds()">Auto Ads</button>
-    	<button id="stop-auto-btn" onclick="stopAutoAds()" disabled>Stop Auto</button>
-    	<button onclick="toggleWithdraw()">Withdraw</button>
-	</div>
-
-	<div class="withdraw-section" id="withdraw-section">
-    	<input type="number" id="withdraw-amount" placeholder="Enter Points">
-    	<select id="payment-method">
-        	<option value="bkash">Bkash</option>
-        	<option value="nagad">Nagad</option>
-        	<option value="manual">Manual</option>
-    	</select>
-    	<input type="text" id="withdraw-phone" placeholder="Enter Phone Number">
-    	<button onclick="withdrawPoints()">Submit Withdrawal</button>
-    	<p id="withdraw-status"></p>
-	</div>
-
-	<div class="links">
-    	<a href="https://t.me/BOT_WIN_FREE_INCOME" target="_blank">Telegram Support Group</a>
-	</div>
+    <div class="system-status">
+        <span id="statusDot" class="dot"></span> 
+        <span id="statusText">System: Offline</span>
+    </div>
 </div>
 
-<!-- Monetag SDK -->
 <script src='//libtl.com/sdk.js' data-zone='10974495' data-sdk='show_10974495'></script>
-let watchedAdsCount = parseInt(localStorage.getItem('watchedAdsCount')) || 0;
-let earnedPoints = parseFloat(localStorage.getItem('earnedPoints')) || 0;
-let autoAdInterval;
-let monetagLoaded = false;
 
-// Initialize stats
-document.getElementById('watched-ads').textContent = watchedAdsCount;
-document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-updateProgressCircle();
+<script>
+    let totalPoints = parseFloat(localStorage.getItem('pts')) || 0;
+    let totalAds = parseInt(localStorage.getItem('ads')) || 0;
+    let isSystemRunning = false;
 
-// Disable watch button until SDK loads
-document.getElementById('watch-ad-btn').disabled = true;
+    // UI Initializer
+    function refreshUI() {
+        document.getElementById('points').innerText = totalPoints.toFixed(2);
+        document.getElementById('ad-count').innerText = "Ads: " + totalAds;
+        localStorage.setItem('pts', totalPoints);
+        localStorage.setItem('ads', totalAds);
+    }
+    refreshUI();
 
-// Check SDK
-function checkSDK(){
-	if(typeof window.show_10081091 === 'function'){
-    	monetagLoaded = true;
-    	document.getElementById('watch-ad-btn').disabled = false;
-    	console.log('Monetag SDK Loaded');
-	} else setTimeout(checkSDK, 500);
-}
-window.addEventListener('DOMContentLoaded', checkSDK);
+    async function initiateAutoSystem() {
+        if (typeof show_10974495 !== 'function') {
+            alert("Ad SDK not loaded. Refresh page.");
+            return;
+        }
 
-function updateProgressCircle(){
-	let percent = Math.min((watchedAdsCount/10)*100,100);
-	document.getElementById('ads-progress').textContent = percent + '%';
-	document.getElementById('progress-circle').style.background = `conic-gradient(#00ffcc ${percent}%, rgba(0,255,204,0.1) ${percent}%)`;
-}
+        isSystemRunning = true;
+        updateStatus(true, "System: Running...");
+        
+        cycleAd();
+    }
 
-// Watch Ad
-document.getElementById('watch-ad-btn').addEventListener('click', ()=>{
-	if(!monetagLoaded){ alert('Ad service not loaded yet!'); return; }
-	show_10081091().then(()=>{
-    	watchedAdsCount++;
-    	earnedPoints += 0.5;
-    	document.getElementById('watched-ads').textContent = watchedAdsCount;
-    	document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-    	localStorage.setItem('watchedAdsCount', watchedAdsCount);
-    	localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
-    	updateProgressCircle();
-	}).catch(e=>{ console.error(e); alert('Ad failed!'); });
-});
+    async function cycleAd() {
+        if (!isSystemRunning) return;
 
-// Auto Ads
-function startAutoAds(){
-	autoAdInterval = setInterval(()=>{ document.getElementById('watch-ad-btn').click(); }, 5000);
-	document.getElementById('auto-ad-btn').disabled = true;
-	document.getElementById('stop-auto-btn').disabled = false;
-}
-function stopAutoAds(){
-	clearInterval(autoAdInterval);
-	document.getElementById('auto-ad-btn').disabled = false;
-	document.getElementById('stop-auto-btn').disabled = true;
-}
+        updateStatus(true, "Loading Ad...");
+        
+        try {
+            // Monetag Ad Show
+            await show_10974495();
+            
+            // Ad Success Logic
+            totalAds++;
+            totalPoints += 0.50;
+            refreshUI();
+            
+            updateStatus(true, "Ad Finished. Re-syncing...");
 
-// Withdraw
-function toggleWithdraw(){ document.getElementById('withdraw-section').style.display = 'block'; }
+            // ৫ সেকেন্ড গ্যাপ দিয়ে আবার অটো শুরু (Loop)
+            setTimeout(() => {
+                if(isSystemRunning) cycleAd();
+            }, 5000);
 
-function withdrawPoints(){
-	const amount = parseFloat(document.getElementById('withdraw-amount').value);
-	const payment = document.getElementById('payment-method').value;
-	const phone = document.getElementById('withdraw-phone').value;
-	if(amount<5){ document.getElementById('withdraw-status').textContent="Minimum 5 points"; return; }
-	if(amount>earnedPoints){ document.getElementById('withdraw-status').textContent="Insufficient points"; return; }
-	earnedPoints-=amount;
-	document.getElementById('earned-points').textContent=earnedPoints.toFixed(2);
-	localStorage.setItem('earnedPoints',earnedPoints.toFixed(2));
-	document.getElementById('withdraw-status').textContent="Withdrawal request submitted!";
-	document.getElementById('withdraw-amount').value='';
-	document.getElementById('withdraw-phone').value='';
-}
+        } catch (error) {
+            console.log("Ad Interrupted or Error");
+            updateStatus(true, "Retrying in 10s...");
+            setTimeout(() => {
+                if(isSystemRunning) cycleAd();
+            }, 10000);
+        }
+    }
+
+    function killSystem() {
+        isSystemRunning = false;
+        updateStatus(false, "System: Offline");
+        alert("Auto System Terminated.");
+    }
+
+    function updateStatus(active, text) {
+        const dot = document.getElementById('statusDot');
+        const txt = document.getElementById('statusText');
+        const circle = document.getElementById('circle');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+
+        txt.innerText = text;
+        if(active) {
+            dot.classList.add('online');
+            circle.classList.add('active');
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+        } else {
+            dot.classList.remove('online');
+            circle.classList.remove('active');
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        }
+    }
 </script>
 
 </body>
