@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earn Master - Infinite Auto</title>
+    <title>Earn Master - Pro System</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Quicksand:wght@400;600&display=swap');
 
         :root {
             --neon-blue: #00d2ff;
             --neon-pink: #ff007f;
-            --bg-dark: #080a10;
+            --bg-dark: #0a0c14;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
@@ -27,35 +27,56 @@
 
         .main-container {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 350px;
-            padding: 40px 20px;
+            width: 360px;
+            padding: 30px;
             border-radius: 40px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 1);
-            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         }
+
+        /* IP Box */
+        .ip-info {
+            font-size: 11px;
+            color: #888;
+            background: rgba(0,0,0,0.4);
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+        }
+
+        .ip-info span { color: var(--neon-blue); font-weight: bold; }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             letter-spacing: 2px;
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        /* Animated Spinner */
-        .loader-box {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
+        /* Circular Progress & Balance */
+        .balance-circle {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.05);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .balance-circle.active {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
         }
 
         .spinner {
@@ -63,157 +84,146 @@
             width: 100%;
             height: 100%;
             border: 3px solid transparent;
-            border-top-color: var(--neon-blue);
+            border-top-color: var(--neon-pink);
             border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-            display: none; /* Default Hidden */
+            display: none;
+            animation: rotate 1s linear infinite;
         }
 
-        .spinner.active { display: block; }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); border-top-color: var(--neon-blue); }
-            50% { border-top-color: var(--neon-pink); }
-            100% { transform: rotate(360deg); border-top-color: var(--neon-blue); }
-        }
-
-        #balance {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
-        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* Buttons */
-        .btn-stack { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; }
 
         button {
-            padding: 15px;
+            padding: 14px;
             border-radius: 15px;
             border: none;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 14px;
             text-transform: uppercase;
         }
 
-        .start-btn {
-            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
-        }
+        .start-btn { background: var(--neon-blue); color: #000; }
+        .stop-btn { background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; }
+        
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .stop-btn {
-            background: #1a1a1a;
-            color: #ff4d4d;
-            border: 1px solid #ff4d4d;
-        }
-
-        .status-text {
-            margin-top: 20px;
-            font-size: 11px;
-            color: #666;
-            letter-spacing: 1px;
-        }
-
-        #status-msg { color: var(--neon-blue); font-weight: bold; }
+        #status-msg { margin-top: 15px; font-size: 12px; color: var(--neon-blue); font-weight: 600; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
+    <div class="ip-info">
+        IP: <span id="user-ip">Checking...</span> | LOC: <span id="user-loc">---</span>
+    </div>
+
     <h1>EARN MASTER PRO</h1>
 
-    <div class="loader-box">
-        <div class="spinner" id="main-spinner"></div>
-        <div style="z-index: 10;">
-            <div id="balance">0.00</div>
-            <div style="font-size: 10px; color: #888; margin-top: 5px;">POINTS EARNED</div>
+    <div class="balance-circle" id="main-circle">
+        <div class="spinner" id="loader"></div>
+        <div style="z-index: 5;">
+            <div id="balance" style="font-size: 26px; font-family: 'Orbitron';">0.00</div>
+            <div style="font-size: 9px; color: #888; letter-spacing: 1px;">TOTAL POINTS</div>
         </div>
     </div>
 
     <div class="btn-stack">
-        <button id="runBtn" class="start-btn" onclick="startInfiniteCycle()">Start Auto ads</button>
-        <button id="quitBtn" class="stop-btn" onclick="stopInfiniteCycle()" disabled>Stop System</button>
+        <button id="startBtn" class="start-btn" onclick="startSystem()">Start Auto Ads</button>
+        <button id="stopBtn" class="stop-btn" onclick="stopSystem()" disabled>Stop System</button>
     </div>
 
-    <p class="status-text">STATUS: <span id="status-msg">READY</span></p>
+    <div id="status-msg">SYSTEM READY</div>
 </div>
 
 <script src='//libtl.com/sdk.js' data-zone='10974495' data-sdk='show_10974495'></script>
 
 <script>
-    let points = parseFloat(localStorage.getItem('user_pts')) || 0;
-    let isAutoOn = false;
-    let cycleTimer;
+    let points = parseFloat(localStorage.getItem('pts')) || 0;
+    let isRunning = false;
+    let loopTimeout;
+
+    // ১. আইপি চেক ফাংশন (API ব্যবহার করে)
+    async function checkIP() {
+        try {
+            const response = await fetch('https://ipapi.co/json/');
+            const data = await response.json();
+            document.getElementById('user-ip').innerText = data.ip;
+            document.getElementById('user-loc').innerText = data.city + ", " + data.country_code;
+        } catch (e) {
+            document.getElementById('user-ip').innerText = "Failed";
+        }
+    }
+    checkIP();
 
     function updateDisplay() {
         document.getElementById('balance').innerText = points.toFixed(2);
-        localStorage.setItem('user_pts', points);
+        localStorage.setItem('pts', points);
     }
     updateDisplay();
 
-    async function startInfiniteCycle() {
-        if (typeof show_10974495 !== 'function') return alert("SDK Loading...");
-        
-        isAutoOn = true;
+    // ২. অটো অ্যাড লুপ
+    async function startSystem() {
+        if (typeof show_10974495 !== 'function') return alert("SDK loading...");
+        isRunning = true;
         toggleUI(true);
-        runAdLoop();
+        runCycle();
     }
 
-    async function runAdLoop() {
-        if (!isAutoOn) return;
+    async function runCycle() {
+        if (!isRunning) return;
 
-        setStatus("LOADING AD...", true);
+        updateStatus("LOADIND AD...", true);
         
         try {
-            // ১. অ্যাড দেখানো শুরু
+            // অ্যাড শো হবে এবং ইউজার 'X' বাটন না কাটা পর্যন্ত কোড এখানেই দাঁড়িয়ে থাকবে
             await show_10974495();
             
-            // ২. অ্যাড সাকসেস হলে পয়েন্ট যোগ
+            // অ্যাড কাটার পর নিচের কোড চলবে
             points += 0.50;
             updateDisplay();
-
-            // ৩. "X" বাটনে ক্লিক করার ঝামেলা ছাড়াই অটোমেটিক লোডিং স্টেটে যাওয়া
-            setStatus("WAITING NEXT...", true);
             
-            // ৫ সেকেন্ড গ্যাপ দিয়ে আবার অটো লুপ
-            cycleTimer = setTimeout(() => {
-                runAdLoop();
-            }, 6000); // ৬ সেকেন্ড বিরতি
+            updateStatus("SUCCESS! RELOADING...", true);
+            
+            // ৫ সেকেন্ড গ্যাপ দিয়ে আবার অটো শুরু
+            loopTimeout = setTimeout(() => {
+                runCycle();
+            }, 5000);
 
         } catch (err) {
-            console.log("Ad Blocked or Skipped");
-            setStatus("RETRYING...", true);
-            setTimeout(runAdLoop, 8000); // এরর হলে ৮ সেকেন্ড পর ট্রাই
+            updateStatus("RETURNING IN 10S...", true);
+            setTimeout(runCycle, 10000);
         }
     }
 
-    function stopInfiniteCycle() {
-        isAutoOn = false;
-        clearTimeout(cycleTimer);
+    function stopSystem() {
+        isRunning = false;
+        clearTimeout(loopTimeout);
         toggleUI(false);
-        setStatus("SYSTEM STOPPED", false);
+        updateStatus("SYSTEM OFFLINE", false);
     }
 
-    function setStatus(msg, spin) {
+    // ৩. হেল্পার ফাংশন
+    function updateStatus(msg, spinning) {
         document.getElementById('status-msg').innerText = msg;
-        const spinner = document.getElementById('main-spinner');
-        if (spin) spinner.classList.add('active');
-        else spinner.classList.remove('active');
+        const loader = document.getElementById('loader');
+        const circle = document.getElementById('main-circle');
+        if (spinning) {
+            loader.style.display = 'block';
+            circle.classList.add('active');
+        } else {
+            loader.style.display = 'none';
+            circle.classList.remove('active');
+        }
     }
 
-    function toggleUI(running) {
-        document.getElementById('runBtn').disabled = running;
-        document.getElementById('quitBtn').disabled = !running;
-        if(running) {
-            document.getElementById('runBtn').innerText = "SYSTEM ACTIVE";
-            document.getElementById('runBtn').style.opacity = "0.6";
-        } else {
-            document.getElementById('runBtn').innerText = "Start Auto ads";
-            document.getElementById('runBtn').style.opacity = "1";
-        }
+    function toggleUI(active) {
+        document.getElementById('startBtn').disabled = active;
+        document.getElementById('stopBtn').disabled = !active;
+        if(active) document.getElementById('startBtn').innerText = "RUNNING";
+        else document.getElementById('startBtn').innerText = "Start Auto Ads";
     }
 </script>
 
