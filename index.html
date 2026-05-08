@@ -3,316 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earn Master Pro | Future of Earning</title>
+    <title>Earn Master Pro - Smart System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Syncopate:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Quicksand:wght@400;600&display=swap');
 
         :root {
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --accent: #ff007a;
-            --dark: #05070a;
-            --glass: rgba(255, 255, 255, 0.07);
+            --neon-blue: #00d2ff;
+            --neon-pink: #ff007f;
+            --bg-dark: #080a10;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
 
         body {
-            background: var(--dark);
+            background: var(--bg-dark);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
             overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(0, 242, 254, 0.15) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(255, 0, 122, 0.1) 0%, transparent 35%);
         }
 
-        /* Background Animation */
-        .orb {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            filter: blur(80px);
-            border-radius: 50%;
-            z-index: -1;
-            animation: float 10s infinite alternate;
-        }
-
-        @keyframes float {
-            from { transform: translate(-50%, -50%); }
-            to { transform: translate(50%, 50%); }
-        }
-
-        .app-container {
-            width: 370px;
-            background: var(--glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
-            position: relative;
-        }
-
-        /* IP Header Info */
-        .header-info {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px 18px;
-            border-radius: 20px;
-            font-size: 11px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .header-info span { color: var(--primary); font-weight: 600; }
-
-        h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 18px;
-            text-align: center;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Points Display */
-        .balance-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-            padding: 30px;
-            border-radius: 30px;
-            text-align: center;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-card::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, var(--primary), transparent);
-            animation: rotate 4s linear infinite;
-            z-index: -1;
-            opacity: 0.2;
-        }
-
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        #pts-val { font-size: 42px; font-weight: 800; display: block; color: #fff; }
-        .pts-label { font-size: 10px; letter-spacing: 4px; color: var(--primary); font-weight: 600; }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .stat-item {
+        .main-container {
             background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 360px;
+            padding: 30px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        }
+
+        /* IP Tracking Box (Whoer Style) */
+        .ip-card {
+            background: rgba(0, 0, 0, 0.4);
             padding: 15px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .stat-item small { font-size: 9px; color: #888; display: block; margin-bottom: 4px; }
-        .stat-item b { font-size: 16px; color: #eee; }
-
-        /* Action Buttons */
-        .btn-box { display: flex; flex-direction: column; gap: 12px; }
-
-        button {
-            width: 100%;
-            padding: 16px;
-            border-radius: 20px;
-            border: none;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-start {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: #05070a;
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.2);
-        }
-
-        .btn-start:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 242, 254, 0.4); }
-
-        .btn-stop {
-            background: rgba(255, 77, 77, 0.1);
-            color: #ff4d4d;
-            border: 1px solid rgba(255, 77, 77, 0.3);
-        }
-
-        .btn-stop:hover:not(:disabled) { background: #ff4d4d; color: white; }
-
-        button:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
-
-        /* Status & Loading */
-        .status-bar {
-            margin-top: 25px;
+            margin-bottom: 25px;
             font-size: 12px;
-            color: #666;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            text-align: left;
+        }
+
+        .ip-card div { margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .ip-card span { color: var(--neon-blue); font-weight: bold; }
+        .vpn-status { color: #ff4d4d !important; }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+
+        /* Balance Display */
+        .balance-circle {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.05);
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            gap: 8px;
+            position: relative;
         }
 
-        .pulse-dot {
-            width: 8px; height: 8px; background: var(--primary);
-            border-radius: 50%; display: none;
-            box-shadow: 0 0 10px var(--primary);
-            animation: pulse 1.5s infinite;
+        .spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--neon-pink);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
         }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* Buttons */
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; }
+        button {
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .start-btn { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        .stop-btn { background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; }
+        button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        #status-text { margin-top: 15px; font-size: 12px; font-weight: bold; color: var(--neon-blue); }
     </style>
 </head>
 <body>
 
-<div class="orb"></div>
-
-<div class="app-container">
-    <div class="header-info">
-        <div>IP: <span id="ip-addr">0.0.0.0</span></div>
-        <div>STatus: <span id="vpn-stat">SECURE</span></div>
+<div class="main-container">
+    <div class="ip-card">
+        <div>Your IP: <span id="ip">Loading...</span></div>
+        <div>Location: <span id="loc">---</span></div>
+        <div>ISP: <span id="isp">---</span></div>
+        <div>VPN/Proxy: <span id="vpn" class="vpn-status">Checking...</span></div>
     </div>
 
     <h1>EARN MASTER PRO</h1>
 
-    <div class="balance-card">
-        <span class="pts-label">AVAILABLE BALANCE</span>
-        <span id="pts-val">0.00</span>
-        <div class="pts-label" style="margin-top: 5px;">POINTS</div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-item">
-            <small>ADS WATCHED</small>
-            <b id="ad-total">0</b>
-        </div>
-        <div class="stat-item">
-            <small>ISP PROVIDER</small>
-            <b id="isp-name" style="font-size: 10px;">Checking...</b>
+    <div class="balance-circle">
+        <div class="spinner" id="loader"></div>
+        <div style="z-index: 5;">
+            <div id="pts" style="font-size: 28px; font-family: 'Orbitron';">0.00</div>
+            <div style="font-size: 10px; color: #888; letter-spacing: 1px;">BALANCE</div>
         </div>
     </div>
 
-    <div class="btn-box">
-        <button id="startBtn" class="btn-start" onclick="startAutoProcess()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            START AUTO CYCLE
-        </button>
-        <button id="stopBtn" class="btn-stop" onclick="stopAutoProcess()" disabled>
-            STOP SYSTEM
-        </button>
+    <div class="btn-stack">
+        <button id="startBtn" class="start-btn" onclick="startCycle()">Start Auto Cycle</button>
+        <button id="stopBtn" class="stop-btn" onclick="stopCycle()" disabled>Stop System</button>
     </div>
 
-    <div class="status-bar">
-        <div class="pulse-dot" id="p-dot"></div>
-        <span id="status-msg">SYSTEM READY</span>
-    </div>
+    <div id="status-text">SYSTEM READY</div>
 </div>
 
 <script src='//libtl.com/sdk.js' data-zone='10974495' data-sdk='show_10974495'></script>
 
 <script>
-    let userPoints = parseFloat(localStorage.getItem('up')) || 0;
-    let userAds = parseInt(localStorage.getItem('ua')) || 0;
-    let isLive = false;
-    let autoTimer;
+    let points = parseFloat(localStorage.getItem('user_points')) || 0;
+    let isRunning = false;
+    let cycleTimeout;
 
-    // IP & Security Check
-    async function initSecurity() {
+    // ১. উন্নত IP এবং VPN চেক
+    async function getWhoerData() {
         try {
-            const r = await fetch('https://ipapi.co/json/');
-            const d = await r.json();
-            document.getElementById('ip-addr').innerText = d.ip;
-            document.getElementById('isp-name').innerText = d.org.substring(0, 15);
-            if(d.country_code !== "BD") {
-                document.getElementById('vpn-stat').innerText = "VPN DETECTED";
-                document.getElementById('vpn-stat').style.color = "#ff4d4d";
-            }
-        } catch(e) { document.getElementById('ip-addr').innerText = "OFFLINE"; }
-    }
-    initSecurity();
-
-    function updateUI() {
-        document.getElementById('pts-val').innerText = userPoints.toFixed(2);
-        document.getElementById('ad-total').innerText = userAds;
-        localStorage.setItem('up', userPoints);
-        localStorage.setItem('ua', userAds);
-    }
-    updateUI();
-
-    async function startAutoProcess() {
-        if (typeof show_10974495 !== 'function') return alert("SDK Error!");
-        isLive = true;
-        toggleButtons(true);
-        runLoop();
-    }
-
-    async function runLoop() {
-        if(!isLive) return;
-        
-        updateStatus("FETCHING AD...", true);
-
-        try {
-            // ১. অ্যাড ওপেন হবে এবং বন্ধ হওয়া পর্যন্ত ওয়েট করবে
-            await show_10974495();
+            const res = await fetch('https://ipapi.co/json/');
+            const data = await res.json();
             
-            // ২. ক্লোজ করার পরের লজিক
-            userPoints += 0.50;
-            userAds++;
-            updateUI();
-            updateStatus("SUCCESS! COOLING DOWN...", true);
+            document.getElementById('ip').innerText = data.ip;
+            document.getElementById('loc').innerText = data.city + ", " + data.country_code;
+            document.getElementById('isp').innerText = data.org;
+            
+            // VPN Detection (সহজ পদ্ধতি: দেশ যদি বাংলাদেশ না হয়)
+            if(data.country_code !== "BD") {
+                document.getElementById('vpn').innerText = "Detected";
+                alert("VPN detected! Please use real IP.");
+            } else {
+                document.getElementById('vpn').innerText = "None";
+                document.getElementById('vpn').style.color = "#00ff00";
+            }
+        } catch (e) {
+            document.getElementById('ip').innerText = "Failed to load";
+        }
+    }
+    getWhoerData();
 
-            // ৫ সেকেন্ডের স্মুথ ট্রানজিশন
-            autoTimer = setTimeout(() => {
-                runLoop();
+    function updatePoints() {
+        document.getElementById('pts').innerText = points.toFixed(2);
+        localStorage.setItem('user_points', points);
+    }
+    updatePoints();
+
+    // ২. স্মার্ট অটো অ্যাড লুপ (X বাটন ডিটেকশন সহ)
+    async function startCycle() {
+        if (typeof show_10974495 !== 'function') return alert("SDK loading...");
+        isRunning = true;
+        toggleButtons(true);
+        runMainLoop();
+    }
+
+    async function runMainLoop() {
+        if (!isRunning) return;
+
+        updateStatus("AD LOADING...", true);
+
+        try {
+            // অ্যাড শো হবে এবং ইউজার 'X' বাটন কাটা পর্যন্ত এখানে ওয়েট করবে
+            await show_10974495();
+
+            // অ্যাড ক্লোজ করার সাথে সাথে নিচের কাজগুলো হবে
+            points += 0.50;
+            updatePoints();
+            updateStatus("SUCCESS! WAITING...", true);
+
+            // ৫ সেকেন্ড গ্যাপ দিয়ে আবার অটোমেটিক শুরু
+            cycleTimeout = setTimeout(() => {
+                runMainLoop();
             }, 5000);
 
-        } catch(err) {
-            updateStatus("RETRIEVING...", true);
-            setTimeout(runLoop, 8000);
+        } catch (err) {
+            updateStatus("ERROR! RETRYING...", true);
+            setTimeout(runMainLoop, 10000);
         }
     }
 
-    function stopAutoProcess() {
-        isLive = false;
-        clearTimeout(autoTimer);
+    function stopCycle() {
+        isRunning = false;
+        clearTimeout(cycleTimeout);
         toggleButtons(false);
-        updateStatus("SYSTEM READY", false);
+        updateStatus("SYSTEM STOPPED", false);
     }
 
-    function updateStatus(m, s) {
-        document.getElementById('status-msg').innerText = m;
-        document.getElementById('p-dot').style.display = s ? 'block' : 'none';
+    // ৩. ইউটিলিটি ফাংশন
+    function updateStatus(msg, spin) {
+        document.getElementById('status-text').innerText = msg;
+        document.getElementById('loader').style.display = spin ? 'block' : 'none';
     }
 
     function toggleButtons(active) {
         document.getElementById('startBtn').disabled = active;
         document.getElementById('stopBtn').disabled = !active;
-        document.getElementById('startBtn').innerHTML = active ? "AUTO RUNNING..." : "START AUTO CYCLE";
+        document.getElementById('startBtn').innerText = active ? "RUNNING" : "Start Auto Cycle";
     }
 </script>
 
